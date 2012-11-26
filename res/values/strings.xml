@@ -4,5 +4,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
+    
+    <string name="address_label">Address</string>
+    <string name="recover_button_text">Recover</string>
 
 </resources>
