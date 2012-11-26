@@ -1,5 +1,11 @@
 package com.example.routerCPR;
 
+import java.io.IOException;
+import java.net.Authenticator;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +23,12 @@ import com.example.routerCPR.domain.Credential;
 public class MainActivity extends Activity {
 	
 	private EditText addressText;
+	
+	private enum Error {
+		NONE,
+		INVALID_URL,
+		COULD_NOT_CONNECT
+	};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,22 +54,46 @@ public class MainActivity extends Activity {
     	
     	private final String address;
     	private final List<Credential> credentials;
+    	private Error error = Error.NONE;
     	
     	public TryPasswordTask(String address, List<Credential> credentials) {
-    		this.address = address;
+    		this.address = cleanup(address);
     		this.credentials = credentials;
     	}
 
 		@Override
 		protected Credential doInBackground(Void... params) {
-			for (int i = 0; i < 5; ++i) {
+			
+			URL url;
+			try {
+				url = new URL(address);
+			} catch (MalformedURLException e) {
+				error = Error.INVALID_URL;
+				return null;
+			}
+			
+			for (final Credential credential : credentials) {
+				Authenticator.setDefault(new Authenticator() {
+					@Override
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(credential.getUser(), credential.getPassword().toCharArray());
+					}
+				});
+				
+				HttpURLConnection connection;
 				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+					connection = (HttpURLConnection)url.openConnection();
+				} catch (IOException e) {
+					error = Error.COULD_NOT_CONNECT;
+					return null;
 				}
 				
-				this.publishProgress((double)i / 5.0);
+				int responseCode;
+				try {
+					responseCode = connection.getResponseCode();
+				} catch (IOException e) {
+					error = Error.COULD_NOT_CONNECT;
+				}
 			}
 			
 			return new Credential("hatfullofhallow", "hunter7");
@@ -72,6 +108,17 @@ public class MainActivity extends Activity {
 		@Override
 		protected void onProgressUpdate(Double... values) {
 			Log.d(MainActivity.this.getClass().getName(), Double.toString(values[0]));
+		}
+		
+		public String cleanup(String url) {
+			
+			String cleanUrl = url.trim();
+			
+			if (!cleanUrl.contains("://")) {
+				cleanUrl = "http://" + cleanUrl;
+			}
+			
+			return cleanUrl;
 		}
     	
     }
