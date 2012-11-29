@@ -14,6 +14,13 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >
+            <meta-data
+                android:name="AA_DB_NAME"
+                android:value="routercpr.db" />
+            <meta-data
+                android:name="AA_DB_VERSION"
+                android:value="1" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
