@@ -1,11 +1,11 @@
-package com.example.routerCPR;
+package com.ageatches.routerCPR;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.routerCPR.domain.Credential;
+import com.ageatches.routerCPR.domain.Credential;
 
 public class CredentialHelper extends SQLiteOpenHelper {
 	

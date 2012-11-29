@@ -1,24 +1,15 @@
-package com.example.routerCPR;
+package com.ageatches.routerCPR;
 
-import java.io.IOException;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.PasswordAuthentication;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.routerCPR.domain.Credential;
+import com.ageatches.routerCPR.domain.Credential;
 
 public class MainActivity extends Activity {
 	

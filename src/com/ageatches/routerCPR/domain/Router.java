@@ -1,4 +1,4 @@
-package com.example.routerCPR.domain;
+package com.ageatches.routerCPR.domain;
 
 public class Router {
 	

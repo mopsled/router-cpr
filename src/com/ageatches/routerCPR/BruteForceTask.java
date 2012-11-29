@@ -1,4 +1,4 @@
-package com.example.routerCPR;
+package com.ageatches.routerCPR;
 
 import java.io.IOException;
 import java.net.Authenticator;
@@ -10,10 +10,9 @@ import java.util.List;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.example.routerCPR.domain.Credential;
+import com.ageatches.routerCPR.domain.Credential;
 
 public class BruteForceTask extends AsyncTask<Void, Double, Credential> {
 	
