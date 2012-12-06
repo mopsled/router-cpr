@@ -12,11 +12,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.ageatches.routerCPR.domain.Credential;
 import com.ageatches.routerCPR.domain.Password;
 import com.ageatches.routerCPR.domain.User;
 
-public class BruteForceTask extends AsyncTask<Void, Double, Credential> {
+public class BruteForceTask extends AsyncTask<Void, Double, BruteForceTask.Credential> {
 	
 	public enum Error {
 		NONE,
@@ -25,13 +24,33 @@ public class BruteForceTask extends AsyncTask<Void, Double, Credential> {
 	};
 	
 	private final String address;
-	private final List<Credential> credentials;
+	private final List<User> users;
+	private final List<Password> passwords;
 	private Context context;
 	private Error error;
 	
-	public BruteForceTask(String address, List<Credential> credentials, Context context) {
+	public class Credential {
+		private final User user;
+		private final Password password;
+		
+		public Credential(User user, Password password) {
+			this.user = user;
+			this.password = password;
+		}
+		
+		public User getUser() {
+			return user;
+		}
+		
+		public Password getPassword() {
+			return password;
+		}
+	}
+	
+	public BruteForceTask(String address, List<User> users,  List<Password> passwords, Context context) {
 		this.address = cleanup(address);
-		this.credentials = credentials;
+		this.users = users;
+		this.passwords = passwords;
 		this.context = context;
 	}
 
@@ -47,27 +66,29 @@ public class BruteForceTask extends AsyncTask<Void, Double, Credential> {
 			return null;
 		}
 		
-		for (final Credential credential : credentials) {
-			Authenticator.setDefault(new Authenticator() {
-				@Override
-				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(credential.getUser(), credential.getPassword().toCharArray());
+		for (final User user : users) {
+			for (final Password password : passwords) {
+				Authenticator.setDefault(new Authenticator() {
+					@Override
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(user.getUser(), password.getPassword().toCharArray());
+					}
+				});
+				
+				HttpURLConnection connection;
+				try {
+					connection = (HttpURLConnection)url.openConnection();
+				} catch (IOException e) {
+					error = Error.COULD_NOT_CONNECT;
+					return null;
 				}
-			});
-			
-			HttpURLConnection connection;
-			try {
-				connection = (HttpURLConnection)url.openConnection();
-			} catch (IOException e) {
-				error = Error.COULD_NOT_CONNECT;
-				return null;
-			}
-			
-			int responseCode;
-			try {
-				responseCode = connection.getResponseCode();
-			} catch (IOException e) {
-				error = Error.COULD_NOT_CONNECT;
+				
+				int responseCode;
+				try {
+					responseCode = connection.getResponseCode();
+				} catch (IOException e) {
+					error = Error.COULD_NOT_CONNECT;
+				}
 			}
 		}
 		

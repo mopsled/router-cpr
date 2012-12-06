@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.ageatches.routerCPR.domain.Credential;
 import com.ageatches.routerCPR.domain.Password;
 import com.ageatches.routerCPR.domain.Router;
 import com.ageatches.routerCPR.domain.User;
@@ -25,8 +24,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	private RuntimeExceptionDao<User, Integer> userRuntimeDao;
 	private Dao<Password, Integer> passwordDao;
 	private RuntimeExceptionDao<Password, Integer> passwordRuntimeDao;
-	private Dao<Credential, Integer> credentialDao;
-	private RuntimeExceptionDao<Credential, Integer> credentialRuntimeDao;
 	private Dao<Router, Integer> routerDao;
 	private RuntimeExceptionDao<Router, Integer> routerRuntimeDao;
 	
@@ -39,7 +36,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		try {
 			TableUtils.createTable(connectionSource, User.class);
 			TableUtils.createTable(connectionSource, Password.class);
-			TableUtils.createTable(connectionSource, Credential.class);
 			TableUtils.createTable(connectionSource, Router.class);
 		} catch (SQLException e) {
 			Log.d(DatabaseHelper.class.getName(), "Could not create database", e);
@@ -57,7 +53,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		super.close();
 		userRuntimeDao = null;
 		passwordRuntimeDao = null;
-		credentialRuntimeDao = null;
 		routerRuntimeDao = null;
 	}
 	
@@ -87,20 +82,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			passwordRuntimeDao = getRuntimeExceptionDao(Password.class);
 		}
 		return passwordRuntimeDao;
-	}
-	
-	public Dao<Credential, Integer> getCredentialDao() throws SQLException {
-		if (credentialDao == null) {
-			credentialDao = getDao(Credential.class);
-		}
-		return credentialDao;
-	}
-	
-	public RuntimeExceptionDao<Credential, Integer> getCredentialRuntimeDao() throws SQLException {
-		if (credentialRuntimeDao == null) {
-			credentialRuntimeDao = getRuntimeExceptionDao(Credential.class);
-		}
-		return credentialRuntimeDao;
 	}
 	
 	public Dao<Router, Integer> getRouterDao() throws SQLException {

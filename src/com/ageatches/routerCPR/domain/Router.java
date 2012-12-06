@@ -10,23 +10,28 @@ public class Router {
 	@DatabaseField
 	private final String bssid;
 	@DatabaseField
+	private final String user;
+	@DatabaseField
+	private final String password;
+	@DatabaseField
 	private final Double latitude;
 	@DatabaseField
 	private final Double longitude;
-	@DatabaseField(foreign = true)
-	private final Credential credential;
+	
 	
 	public static class Builder {
 		private final String bssid;
-		private final Credential credential;
+		private final String user;
+		private final String password;
 		
 		private String ssid = null;
 		private Double latitude = null;
 		private Double longitude = null;
 		
-		public Builder(String bssid, Credential credential) {
+		public Builder(String bssid, String user, String password) {
 			this.bssid = bssid;
-			this.credential = credential;
+			this.user = user;
+			this.password = password;
 		}
 		
 		public Builder ssid(String ssid) {
@@ -50,7 +55,8 @@ public class Router {
 		bssid = builder.bssid;
 		latitude = builder.latitude;
 		longitude = builder.longitude;
-		credential = builder.credential;
+		user = builder.user;
+		password = builder.password;
 	}
 
 }
