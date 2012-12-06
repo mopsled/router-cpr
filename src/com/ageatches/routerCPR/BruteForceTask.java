@@ -13,6 +13,8 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.ageatches.routerCPR.domain.Credential;
+import com.ageatches.routerCPR.domain.Password;
+import com.ageatches.routerCPR.domain.User;
 
 public class BruteForceTask extends AsyncTask<Void, Double, Credential> {
 	
@@ -69,7 +71,9 @@ public class BruteForceTask extends AsyncTask<Void, Double, Credential> {
 			}
 		}
 		
-		return new Credential("hatfullofhallow", "hunter7");
+		User user = new User("hatfullofhallow");
+		Password password = new Password("hunter7");
+		return new Credential(user, password);
 	}
 	
 	@Override

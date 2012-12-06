@@ -32,6 +32,7 @@ public class MainActivity extends Activity {
     public void recoverAction(View v) {
     	String address = addressText.getText().toString();
     	Toast.makeText(this, "Recovering " + address, Toast.LENGTH_SHORT).show();
+    	
     	new BruteForceTask("10.0.3.14", new ArrayList<Credential>(), this).execute();
     }
     
