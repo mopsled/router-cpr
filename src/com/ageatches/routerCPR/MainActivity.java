@@ -46,7 +46,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     	RuntimeExceptionDao<Password, Integer> passwordDao = getHelper().getPasswordDao();
     	List<Password> passwords = passwordDao.queryForAll();
     		
-    	new BruteForceTask("10.0.3.14", users, passwords, this).execute();
+    	new BruteForceTask(addressText.getText().toString(), users, passwords, this).execute();
     }
 
 	public void processBruteForceTaskSucceeded(Credential credentials) {
