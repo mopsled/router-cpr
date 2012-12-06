@@ -11,12 +11,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ageatches.routerCPR.BruteForceTask.Credential;
+import com.ageatches.routerCPR.BruteForceTask.Error;
 import com.ageatches.routerCPR.domain.Password;
 import com.ageatches.routerCPR.domain.User;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
-public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
+public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements BruteForceTaskListener {
 	
 	private EditText addressText;
 
@@ -38,25 +40,30 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     	String address = addressText.getText().toString();
     	Toast.makeText(this, "Recovering " + address, Toast.LENGTH_SHORT).show();
     	
-    	RuntimeExceptionDao<User, Integer> userDao;
-    	try {
-    		userDao = getHelper().getUserRuntimeDao();
-    	} catch (SQLException e) {
-    		Log.d(MainActivity.class.getName(), "Could not get User DAO", e);
-    		throw new RuntimeException(e);
-    	}
+    	RuntimeExceptionDao<User, Integer> userDao = getHelper().getUserDao();
     	List<User> users = userDao.queryForAll();
     	
-    	RuntimeExceptionDao<Password, Integer> passwordDao;
-    	try {
-    		passwordDao = getHelper().getPasswordRuntimeDao();
-    	} catch (SQLException e) {
-    		Log.d(MainActivity.class.getName(), "Could not get Password DAO", e);
-    		throw new RuntimeException(e);
-    	}
+    	RuntimeExceptionDao<Password, Integer> passwordDao = getHelper().getPasswordDao();
     	List<Password> passwords = passwordDao.queryForAll();
     		
     	new BruteForceTask("10.0.3.14", users, passwords, this).execute();
     }
+
+	public void processBruteForceTaskSucceeded(Credential credentials) {
+		String status = "User: " + credentials.getUser() + ", Password: " + credentials.getPassword();
+		Toast.makeText(getApplicationContext(), status, Toast.LENGTH_LONG).show();
+	}
+
+	public void processBruteForceTaskFailed(Error error) {
+		if (error == Error.COULD_NOT_CONNECT) {
+			Toast.makeText(getApplicationContext(), "Could not connect to address", Toast.LENGTH_SHORT).show();
+		} else if (error == Error.AUTHENTICATION_UNECESSARY) {
+			Toast.makeText(getApplicationContext(), "Address given does not require authentication", Toast.LENGTH_SHORT).show();
+		} else if (error == Error.INVALID_URL) {
+			Toast.makeText(getApplicationContext(), "Could not understand this address", Toast.LENGTH_SHORT).show();
+		} else if (error == Error.UNKNOWN_RESPONSE_CODE) {
+			Toast.makeText(getApplicationContext(), "Unknown reponse code returned by server", Toast.LENGTH_SHORT).show();
+		}
+	}
     
 }

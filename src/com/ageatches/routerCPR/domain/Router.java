@@ -5,18 +5,18 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "routers")
 public class Router {
+	@DatabaseField
+	private String ssid;
 	@DatabaseField(id = true)
-	private final String ssid;
+	private String bssid;
 	@DatabaseField
-	private final String bssid;
+	private String user;
 	@DatabaseField
-	private final String user;
+	private String password;
 	@DatabaseField
-	private final String password;
+	private Double latitude;
 	@DatabaseField
-	private final Double latitude;
-	@DatabaseField
-	private final Double longitude;
+	private Double longitude;
 	
 	
 	public static class Builder {
@@ -58,5 +58,8 @@ public class Router {
 		user = builder.user;
 		password = builder.password;
 	}
-
+	
+	public Router() {
+		
+	}
 }

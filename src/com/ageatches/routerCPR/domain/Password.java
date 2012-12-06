@@ -5,10 +5,14 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "passwords")
 public class Password {
-	@DatabaseField(id = true)
+	@DatabaseField(generatedId = true)
 	private int id;
 	@DatabaseField
-	private final String password;
+	private String password;
+	
+	public Password() {
+			
+	}
 	
 	public Password(String password) {
 		this.password = password;
