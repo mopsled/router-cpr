@@ -1,14 +1,8 @@
 package com.ageatches.routerCPR.domain;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 
-@Table(name = "Credentials")
-public class Credential extends Model {
-	@Column(name = "user")
+public class Credential {
 	private final String user;
-	@Column(name = "password")
 	private final String password;
 	
 	public Credential(String user, String password) {
