@@ -1,10 +1,19 @@
 <html>
 	<head>
 		<script type="text/javascript">
-			function appendToStatus(message) {
+			function appendToStatus(message, type) {
 				var p = document.createElement('p');
 				var messageText = document.createTextNode(message);
 				p.appendChild(messageText);
+				
+				if (type == "GOOD") {
+					p.className += "good";
+				} else if (type == "BAD") {
+					p.className += "bad";
+				} else if (type == "INSTRUCTIONS") {
+					p.className += "instructions";
+				}
+				
 				document.getElementById('status').appendChild(p);
 			}
 			
@@ -23,6 +32,18 @@
 				background-color: black;
 				color: #ddd;
 				font-size: 12px;
+			}
+			
+			.good {
+				color: green;
+			}
+			
+			.bad {
+				color: red;
+			}
+			
+			.instructions {
+				font-weight: bold;
 			}
 		</style>
 	</head>

@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Credentials;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -30,6 +31,13 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 	
 	private EditText addressText;
 	private WebView status;
+	
+	private enum StatusType {
+		INFO,
+		GOOD,
+		BAD,
+		INSTRUCTIONS
+	};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,24 +93,24 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     }
 
     public void processBruteForceTaskSucceeded(Credential credentials) {
-    	appendToStatus("Brute force successful!");
+    	clearSubStatus();
+    	appendToStatus("Brute force successful!", StatusType.GOOD);
 		String status = credentials.getUser().getUser() + "/" + credentials.getPassword().getPassword();
-		appendToStatus("Credentials: " + status);
-		
-		clearSubStatus();
+		appendToStatus("Credentials: " + status, StatusType.GOOD);
+		appendToStatus("Press MENU to store credentials.", StatusType.INSTRUCTIONS);
 	}
 
     public void processBruteForceTaskFailed(Error error) {
 		if (error == Error.COULD_NOT_CONNECT) {
-			appendToStatus("Error: could not connect to address");
+			appendToStatus("Error: could not connect to address", StatusType.BAD);
 		} else if (error == Error.AUTHENTICATION_UNECESSARY) {
-			appendToStatus("Error: address given does not require authentication");
+			appendToStatus("Error: address given does not require authentication", StatusType.BAD);
 		} else if (error == Error.INVALID_URL) {
-			appendToStatus("Error: could not understand the address");
+			appendToStatus("Error: could not understand the address", StatusType.BAD);
 		} else if (error == Error.UNKNOWN_RESPONSE_CODE) {
-			appendToStatus("Error: unknown reponse code returned by server");
+			appendToStatus("Error: unknown reponse code returned by server", StatusType.BAD);
 		} else if (error == Error.COULD_NOT_BRUTE_FORCE) {
-			appendToStatus("Brute force failed. Unable to brute force address.");
+			appendToStatus("Brute force failed. Unable to brute force address.", StatusType.BAD);
 		}
 		
 		clearSubStatus();
@@ -119,6 +127,10 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         status.getSettings().setJavaScriptEnabled(true);
 	}
 	
+	private void storeCredentials(Credentials credentials) {
+		
+	}
+	
 	private void setAddress(String address) {
 		addressText.setText(address);
 		
@@ -132,7 +144,11 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 	}
 
     private void appendToStatus(String update) {
-    	status.loadUrl("javascript:appendToStatus('" + update + "')");
+    	appendToStatus(update, StatusType.INFO);
+    }
+    
+    private void appendToStatus(String update, StatusType type) {
+    	status.loadUrl("javascript:appendToStatus('" + update + "', '" + type.toString() + "')");
     }
     
     private void setSubStatus(String message) {
