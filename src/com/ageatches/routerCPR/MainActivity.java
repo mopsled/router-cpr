@@ -1,11 +1,8 @@
 package com.ageatches.routerCPR;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -63,6 +60,8 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 			Toast.makeText(getApplicationContext(), "Could not understand this address", Toast.LENGTH_SHORT).show();
 		} else if (error == Error.UNKNOWN_RESPONSE_CODE) {
 			Toast.makeText(getApplicationContext(), "Unknown reponse code returned by server", Toast.LENGTH_SHORT).show();
+		} else if (error == Error.COULD_NOT_BRUTE_FORCE) {
+			Toast.makeText(getApplicationContext(), "Unable to brute force address", Toast.LENGTH_SHORT).show();
 		}
 	}
     

@@ -8,11 +8,9 @@ import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.util.List;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.ageatches.routerCPR.domain.Password;
 import com.ageatches.routerCPR.domain.User;
@@ -24,7 +22,8 @@ public class BruteForceTask extends AsyncTask<Void, Double, BruteForceTask.Crede
 		INVALID_URL,
 		COULD_NOT_CONNECT,
 		AUTHENTICATION_UNECESSARY,
-		UNKNOWN_RESPONSE_CODE
+		UNKNOWN_RESPONSE_CODE,
+		COULD_NOT_BRUTE_FORCE
 	};
 	
 	private final String address;
@@ -67,13 +66,6 @@ public class BruteForceTask extends AsyncTask<Void, Double, BruteForceTask.Crede
 		
 		for (final User user : users) {
 			for (final Password password : passwords) {
-				Authenticator.setDefault(new Authenticator() {
-					@Override
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(user.getUser(), password.getPassword().toCharArray());
-					}
-				});
-				
 				HttpURLConnection connection;
 				try {
 					connection = (HttpURLConnection) url.openConnection();
@@ -81,6 +73,9 @@ public class BruteForceTask extends AsyncTask<Void, Double, BruteForceTask.Crede
 					error = Error.COULD_NOT_CONNECT;
 					return null;
 				}
+				
+				connection.setUseCaches(false);
+				setAuthentication(connection, user, password);
 				
 				int responseCode;
 				try {
@@ -100,6 +95,7 @@ public class BruteForceTask extends AsyncTask<Void, Double, BruteForceTask.Crede
 			}
 		}
 		
+		error = Error.COULD_NOT_BRUTE_FORCE;
 		return null;
 	}
 	
@@ -142,6 +138,15 @@ public class BruteForceTask extends AsyncTask<Void, Double, BruteForceTask.Crede
 			Log.d(BruteForceTask.class.getName(), "Received unknown response code " + responseCode);
 			return Error.UNKNOWN_RESPONSE_CODE;
 		}
+	}
+	
+	private void setAuthentication(HttpURLConnection connection, User user, Password password) {
+		String userString = (user.getUser().equals("")) ? "(blank)" : user.getUser();
+		String passwordString = (password.getPassword().equals("")) ? "(blank)" : password.getPassword();
+		Log.d(BruteForceTask.this.getClass().getName(), "Setting authentication credentials to " + userString + "/" + passwordString);
+		
+		String credentials = user.getUser() + ":" + password.getPassword();
+		connection.setRequestProperty("Authorization", "basic " + Base64.encode(credentials.getBytes(), Base64.DEFAULT));
 	}
 	
 	private String cleanup(String url) {
