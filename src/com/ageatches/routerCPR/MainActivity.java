@@ -145,6 +145,9 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 		
 		Router router = new Router.Builder(bssid, user, password).ssid(ssid).build();
 		getHelper().getRouterDao().create(router);
+		
+		appendToStatus("Credentials stored.");
+		removeStoreCredentialsMenuItem();
 	}
 	
 	private void setAddress(String address) {
