@@ -31,6 +31,8 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 	
 	private EditText addressText;
 	private WebView status;
+	private Credential discoveredCredentials;
+	private Menu menu;
 	
 	private enum StatusType {
 		INFO,
@@ -52,6 +54,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+    	this.menu = menu;
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
@@ -77,8 +80,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     }
     
     public void recoverAction(View v) {
-    	clearStatus();
-    	clearSubStatus();
+    	resetState();
     	
     	String address = addressText.getText().toString();
     	appendToStatus("Starting recovery of " + address + "...");
@@ -98,6 +100,9 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 		String status = credentials.getUser().getUser() + "/" + credentials.getPassword().getPassword();
 		appendToStatus("Credentials: " + status, StatusType.GOOD);
 		appendToStatus("Press MENU to store credentials.", StatusType.INSTRUCTIONS);
+		
+		addStoreCredentialsMenuItem();
+		discoveredCredentials = credentials;
 	}
 
     public void processBruteForceTaskFailed(Error error) {
@@ -139,6 +144,13 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 		status.requestFocus();
 	}
 	
+	private void resetState() {
+		clearStatus();
+    	clearSubStatus();
+    	discoveredCredentials = null;
+    	removeStoreCredentialsMenuItem();
+	}
+	
 	private void clearStatus() {
 		status.loadUrl("file:///android_asset/status.html");
 	}
@@ -157,6 +169,16 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     
     private void clearSubStatus() {
     	status.loadUrl("javascript:setSubStatus('')");
+    }
+    
+    private void addStoreCredentialsMenuItem() {
+    	MenuItem item = menu.findItem(R.id.menu_store_credentials);
+    	item.setVisible(true);
+    }
+    
+    private void removeStoreCredentialsMenuItem() {
+    	MenuItem item = menu.findItem(R.id.menu_store_credentials);
+    	item.setVisible(false);
     }
     
     private String getGatewayAddress() {

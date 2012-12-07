@@ -5,6 +5,7 @@
     
     <string name="menu_guess_gateway">Guess Gateway</string>
     <string name="menu_debug_known">DEBUG: Attack known authentication</string>
+    <string name="menu_store_credentials">Store Credentials</string>
     
     <string name="address_label">Address</string>
     <string name="recover_button_text">Recover</string>
