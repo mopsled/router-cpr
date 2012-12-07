@@ -7,6 +7,15 @@
 				p.appendChild(messageText);
 				document.getElementById('status').appendChild(p);
 			}
+			
+			function setSubStatus(message) {
+				var p = document.createElement('p');
+				var messageText = document.createTextNode(message);
+				p.appendChild(messageText);
+				var element = document.getElementById('subStatus');
+				element.innerHTML = '';
+				element.appendChild(p);
+			}
 		</script>
 		<style>
 			body {
@@ -19,5 +28,6 @@
 	</head>
 	<body>
 		<div id="status"></div>
+		<div id="subStatus"></div>
 	</body>
 </html>

@@ -68,7 +68,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     public void recoverAction(View v) {
     	clearStatus();
     	String address = addressText.getText().toString();
-    	appendToStatus("Starting recovery of " + address);
+    	appendToStatus("Starting recovery of " + address + "...");
     	
     	RuntimeExceptionDao<User, Integer> userDao = getHelper().getUserDao();
     	List<User> users = userDao.queryForAll();
@@ -97,10 +97,12 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 		} else if (error == Error.COULD_NOT_BRUTE_FORCE) {
 			appendToStatus("Brute force failed. Unable to brute force address.");
 		}
+		
+		clearSubStatus();
 	}
 
 	public void processBruteForceTaskUpdate(String update) {
-		appendToStatus(update);
+		setSubStatus(update);
 	}
 	
 	@SuppressLint("SetJavaScriptEnabled")
@@ -116,6 +118,14 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 
     private void appendToStatus(String update) {
     	status.loadUrl("javascript:appendToStatus('" + update + "')");
+    }
+    
+    private void setSubStatus(String message) {
+    	status.loadUrl("javascript:setSubStatus('" + message + "')");
+    }
+    
+    private void clearSubStatus() {
+    	status.loadUrl("javascript:setSubStatus('')");
     }
     
     private String getGatewayAddress() {

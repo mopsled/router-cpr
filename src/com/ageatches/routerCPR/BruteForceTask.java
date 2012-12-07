@@ -32,6 +32,8 @@ public class BruteForceTask extends AsyncTask<Void, String, BruteForceTask.Crede
 	private BruteForceTaskListener delegate;
 	private Error error;
 	
+	private final int CONNECT_TIMEOUT = 5000;
+	
 	public BruteForceTask(String address, List<User> users,  List<Password> passwords, BruteForceTaskListener delegate) {
 		this.address = cleanup(address);
 		this.users = users;
@@ -64,6 +66,9 @@ public class BruteForceTask extends AsyncTask<Void, String, BruteForceTask.Crede
 			return null;
 		}
 		
+		int guesses = 1;
+		int totalGuesses = users.size() * passwords.size();
+		
 		for (final User user : users) {
 			for (final Password password : passwords) {
 				HttpURLConnection connection;
@@ -74,12 +79,15 @@ public class BruteForceTask extends AsyncTask<Void, String, BruteForceTask.Crede
 					return null;
 				}
 				
+				connection.setConnectTimeout(CONNECT_TIMEOUT);
 				connection.setUseCaches(false);
 				setAuthentication(connection, user, password);
 				
 				String userString = (user.getUser().equals("")) ? "(blank)" : user.getUser();
 				String passwordString = (password.getPassword().equals("")) ? "(blank)" : password.getPassword();
-				publishProgress("Trying " + userString + "/" + passwordString + "");
+				String progress = getProgress(guesses, totalGuesses);
+				publishProgress(progress + " Trying " + userString + "/" + passwordString);
+				guesses++;
 				
 				int responseCode;
 				try {
@@ -126,6 +134,7 @@ public class BruteForceTask extends AsyncTask<Void, String, BruteForceTask.Crede
 		} catch (IOException e) {
 			return Error.COULD_NOT_CONNECT;
 		}
+		connection.setConnectTimeout(CONNECT_TIMEOUT);
 		
 		int responseCode;
 		try {
@@ -147,6 +156,15 @@ public class BruteForceTask extends AsyncTask<Void, String, BruteForceTask.Crede
 	private void setAuthentication(HttpURLConnection connection, User user, Password password) {
 		String credentials = user.getUser() + ":" + password.getPassword();
 		connection.setRequestProperty("Authorization", "basic " + Base64.encode(credentials.getBytes(), Base64.DEFAULT));
+	}
+	
+	private String getProgress(int guesses, int totalGuesses) {
+		String largerNumber = Integer.toString(totalGuesses);
+		int digitCount = largerNumber.length();
+		
+		String guessesPadded = String.format("%0" + Integer.toString(digitCount) + "d", guesses);
+		String progress = "(" + guessesPadded + "/" + largerNumber + ")";
+		return progress;
 	}
 	
 	private String cleanup(String url) {
