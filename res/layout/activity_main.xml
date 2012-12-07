@@ -1,26 +1,39 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical" >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/address_label" />
+        android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/address"
-        android:layout_width="0dip"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/address_label" />
+
+        <EditText
+            android:id="@+id/address"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textUri" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="textUri"
-        android:layout_weight="1" />
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/recover"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/recover_button_text"
-        android:onClick="recoverAction" />
+        <Button
+            android:id="@+id/recover"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="recoverAction"
+            android:text="@string/recover_button_text" />
+    </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
