@@ -5,10 +5,10 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.ageatches.routerCPR.BruteForceTask.Credential;
 import com.ageatches.routerCPR.BruteForceTask.Error;
@@ -37,6 +37,18 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	int itemId = item.getItemId();
+    	
+    	if (itemId == R.id.menu_guess_gateway) {
+    		addressText.setText("Guess");
+    		return true;
+    	}
+    	
+    	return super.onOptionsItemSelected(item);
     }
     
     public void recoverAction(View v) {
