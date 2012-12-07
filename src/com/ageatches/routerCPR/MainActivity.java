@@ -1,14 +1,22 @@
 package com.ageatches.routerCPR;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ageatches.routerCPR.BruteForceTask.Credential;
 import com.ageatches.routerCPR.BruteForceTask.Error;
@@ -44,7 +52,13 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     	int itemId = item.getItemId();
     	
     	if (itemId == R.id.menu_guess_gateway) {
-    		addressText.setText("Guess");
+    		String gatewayAddress = getGatewayAddress();
+    		if (gatewayAddress == null) {
+    			Toast.makeText(this, "Unable to retrieve gateway", Toast.LENGTH_SHORT).show();
+    		} else {
+    			addressText.setText(gatewayAddress);
+    		}
+    		
     		return true;
     	}
     	
@@ -102,6 +116,27 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 
     private void appendToStatus(String update) {
     	status.loadUrl("javascript:appendToStatus('" + update + "')");
+    }
+    
+    private String getGatewayAddress() {
+    	WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+    	DhcpInfo info = wifiManager.getDhcpInfo();
+    	
+    	byte[] infoBytesAndroidOrder = ByteBuffer.allocate(4).putInt(info.gateway).array();
+    	byte[] infoBytesNetworkOrder = new byte[4];
+    	for (int i = 0; i < infoBytesAndroidOrder.length; i++) {
+    		infoBytesNetworkOrder[infoBytesAndroidOrder.length - i - 1] = infoBytesAndroidOrder[i];
+    	}
+    	
+    	String gateway = null;
+    	
+    	try {
+			gateway = InetAddress.getByAddress(infoBytesNetworkOrder).getHostAddress();
+		} catch (UnknownHostException e) {
+			Log.d(this.getClass().getName(), "Unable to turn gateway " + Integer.toString(info.gateway) + " into IP address", e);
+		}
+    	
+    	return gateway;
     }
     
 }
