@@ -40,8 +40,8 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     }
     
     public void recoverAction(View v) {
+    	clearStatus();
     	String address = addressText.getText().toString();
-    	Toast.makeText(this, "Recovering " + address, Toast.LENGTH_SHORT).show();
     	appendToStatus("Starting recovery of " + address);
     	
     	RuntimeExceptionDao<User, Integer> userDao = getHelper().getUserDao();
@@ -54,21 +54,22 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     }
 
     public void processBruteForceTaskSucceeded(Credential credentials) {
+    	appendToStatus("Brute force successful!");
 		String status = "User: " + credentials.getUser() + ", Password: " + credentials.getPassword();
-		Toast.makeText(getApplicationContext(), status, Toast.LENGTH_LONG).show();
+		appendToStatus("Credentials: " + status);
 	}
 
     public void processBruteForceTaskFailed(Error error) {
 		if (error == Error.COULD_NOT_CONNECT) {
-			Toast.makeText(getApplicationContext(), "Could not connect to address", Toast.LENGTH_SHORT).show();
+			appendToStatus("Error: could not connect to address");
 		} else if (error == Error.AUTHENTICATION_UNECESSARY) {
-			Toast.makeText(getApplicationContext(), "Address given does not require authentication", Toast.LENGTH_SHORT).show();
+			appendToStatus("Error: address given does not require authentication");
 		} else if (error == Error.INVALID_URL) {
-			Toast.makeText(getApplicationContext(), "Could not understand this address", Toast.LENGTH_SHORT).show();
+			appendToStatus("Error: could not understand the address");
 		} else if (error == Error.UNKNOWN_RESPONSE_CODE) {
-			Toast.makeText(getApplicationContext(), "Unknown reponse code returned by server", Toast.LENGTH_SHORT).show();
+			appendToStatus("Error: unknown reponse code returned by server");
 		} else if (error == Error.COULD_NOT_BRUTE_FORCE) {
-			Toast.makeText(getApplicationContext(), "Unable to brute force address", Toast.LENGTH_SHORT).show();
+			appendToStatus("Brute force failed. Unable to brute force address.");
 		}
 	}
 

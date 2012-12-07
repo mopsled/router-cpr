@@ -77,6 +77,10 @@ public class BruteForceTask extends AsyncTask<Void, String, BruteForceTask.Crede
 				connection.setUseCaches(false);
 				setAuthentication(connection, user, password);
 				
+				String userString = (user.getUser().equals("")) ? "(blank)" : user.getUser();
+				String passwordString = (password.getPassword().equals("")) ? "(blank)" : password.getPassword();
+				publishProgress("Trying authentication " + userString + "/" + passwordString + "");
+				
 				int responseCode;
 				try {
 					responseCode = connection.getResponseCode();
@@ -141,10 +145,6 @@ public class BruteForceTask extends AsyncTask<Void, String, BruteForceTask.Crede
 	}
 	
 	private void setAuthentication(HttpURLConnection connection, User user, Password password) {
-		String userString = (user.getUser().equals("")) ? "(blank)" : user.getUser();
-		String passwordString = (password.getPassword().equals("")) ? "(blank)" : password.getPassword();
-		Log.d(BruteForceTask.this.getClass().getName(), "Setting authentication credentials to " + userString + "/" + passwordString);
-		
 		String credentials = user.getUser() + ":" + password.getPassword();
 		connection.setRequestProperty("Authorization", "basic " + Base64.encode(credentials.getBytes(), Base64.DEFAULT));
 	}
