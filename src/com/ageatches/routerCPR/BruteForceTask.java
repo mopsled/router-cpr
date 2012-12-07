@@ -15,7 +15,7 @@ import android.util.Log;
 import com.ageatches.routerCPR.domain.Password;
 import com.ageatches.routerCPR.domain.User;
 
-public class BruteForceTask extends AsyncTask<Void, Double, BruteForceTask.Credential> {
+public class BruteForceTask extends AsyncTask<Void, String, BruteForceTask.Credential> {
 	
 	public enum Error {
 		NONE,
@@ -109,8 +109,8 @@ public class BruteForceTask extends AsyncTask<Void, Double, BruteForceTask.Crede
 	}
 	
 	@Override
-	protected void onProgressUpdate(Double... values) {
-		// Update UI with progress
+	protected void onProgressUpdate(String... values) {
+		delegate.processBruteForceTaskUpdate(values[0]);
 	}
 	
 	private Error tryConnectingWithoutCredentials(URL url) {

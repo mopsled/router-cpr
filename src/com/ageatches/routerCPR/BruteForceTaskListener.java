@@ -4,6 +4,7 @@ import com.ageatches.routerCPR.BruteForceTask.Credential;
 import com.ageatches.routerCPR.BruteForceTask.Error;
 
 public interface BruteForceTaskListener {
-	void processBruteForceTaskSucceeded(Credential credentials);
-	void processBruteForceTaskFailed(Error error);
+	public void processBruteForceTaskSucceeded(Credential credentials);
+	public void processBruteForceTaskUpdate(String update);
+	public void processBruteForceTaskFailed(Error error);
 }

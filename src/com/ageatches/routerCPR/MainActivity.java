@@ -2,6 +2,7 @@ package com.ageatches.routerCPR;
 
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -28,6 +29,8 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         
         addressText = (EditText)findViewById(R.id.address);
         status = (WebView)findViewById(R.id.status);
+        
+        initializeStatus();
     }
 
     @Override
@@ -39,6 +42,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     public void recoverAction(View v) {
     	String address = addressText.getText().toString();
     	Toast.makeText(this, "Recovering " + address, Toast.LENGTH_SHORT).show();
+    	appendToStatus("Starting recovery of " + address);
     	
     	RuntimeExceptionDao<User, Integer> userDao = getHelper().getUserDao();
     	List<User> users = userDao.queryForAll();
@@ -49,12 +53,12 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     	new BruteForceTask(addressText.getText().toString(), users, passwords, this).execute();
     }
 
-	public void processBruteForceTaskSucceeded(Credential credentials) {
+    public void processBruteForceTaskSucceeded(Credential credentials) {
 		String status = "User: " + credentials.getUser() + ", Password: " + credentials.getPassword();
 		Toast.makeText(getApplicationContext(), status, Toast.LENGTH_LONG).show();
 	}
 
-	public void processBruteForceTaskFailed(Error error) {
+    public void processBruteForceTaskFailed(Error error) {
 		if (error == Error.COULD_NOT_CONNECT) {
 			Toast.makeText(getApplicationContext(), "Could not connect to address", Toast.LENGTH_SHORT).show();
 		} else if (error == Error.AUTHENTICATION_UNECESSARY) {
@@ -67,5 +71,23 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 			Toast.makeText(getApplicationContext(), "Unable to brute force address", Toast.LENGTH_SHORT).show();
 		}
 	}
+
+	public void processBruteForceTaskUpdate(String update) {
+		appendToStatus(update);
+	}
+	
+	@SuppressLint("SetJavaScriptEnabled")
+	private void initializeStatus() {
+        clearStatus();
+        status.getSettings().setJavaScriptEnabled(true);
+	}
+	
+	private void clearStatus() {
+		status.loadUrl("file:///android_asset/status.html");
+	}
+
+    private void appendToStatus(String update) {
+    	status.loadUrl("javascript:appendToStatus('" + update + "')");
+    }
     
 }

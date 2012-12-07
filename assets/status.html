@@ -1,0 +1,15 @@
+<html>
+	<head>
+		<script type="text/javascript">
+			function appendToStatus(message) {
+				var p = document.createElement('p');
+				var messageText = document.createTextNode(message);
+				p.appendChild(messageText);
+				document.getElementById('status').appendChild(p);
+			}
+		</script>
+	</head>
+	<body>
+		<div id="status"></div>
+	</body>
+</html>
