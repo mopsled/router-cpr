@@ -5,8 +5,10 @@
     android:scrollbars="vertical" >
 
     <LinearLayout
+        android:id="@+id/address_section"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dip"
         android:orientation="vertical" >
 
         <TextView
@@ -22,10 +24,19 @@
             android:inputType="textUri" />
     </LinearLayout>
 
+    <WebView
+        android:id="@+id/status"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/recover_section"
+        android:layout_below="@id/address_section" />
+
     <LinearLayout
+        android:id="@id/recover_section"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_margin="10dip"
         android:orientation="vertical" >
 
         <Button

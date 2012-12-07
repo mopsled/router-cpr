@@ -5,6 +5,7 @@ import java.util.List;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements BruteForceTaskListener {
 	
 	private EditText addressText;
+	private WebView status;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         setContentView(R.layout.activity_main);
         
         addressText = (EditText)findViewById(R.id.address);
+        status = (WebView)findViewById(R.id.status);
     }
 
     @Override
