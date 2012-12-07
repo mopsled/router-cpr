@@ -7,8 +7,8 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.Credentials;
 import android.net.DhcpInfo;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.ageatches.routerCPR.BruteForceTask.Credential;
 import com.ageatches.routerCPR.BruteForceTask.Error;
 import com.ageatches.routerCPR.domain.Password;
+import com.ageatches.routerCPR.domain.Router;
 import com.ageatches.routerCPR.domain.User;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -41,7 +42,6 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 		INSTRUCTIONS
 	};
 
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -74,6 +74,8 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     		return true;
     	} else if (itemId == R.id.menu_debug_known) {
     		setAddress("mopsled.com/r");
+    	} else if (itemId == R.id.menu_store_credentials) {
+    		storeCredentials();
     	}
     	
     	return super.onOptionsItemSelected(item);
@@ -132,8 +134,17 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         status.getSettings().setJavaScriptEnabled(true);
 	}
 	
-	private void storeCredentials(Credentials credentials) {
+	private void storeCredentials() {
+		WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 		
+		String ssid = wifiInfo.getSSID();
+		String bssid = wifiInfo.getBSSID();
+		String user = discoveredCredentials.getUser().getUser();
+		String password = discoveredCredentials.getPassword().getPassword();
+		
+		Router router = new Router.Builder(bssid, user, password).ssid(ssid).build();
+		getHelper().getRouterDao().create(router);
 	}
 	
 	private void setAddress(String address) {
