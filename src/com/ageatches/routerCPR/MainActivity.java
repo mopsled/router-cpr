@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -56,12 +57,12 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     		if (gatewayAddress == null) {
     			Toast.makeText(this, "Unable to retrieve gateway", Toast.LENGTH_SHORT).show();
     		} else {
-    			addressText.setText(gatewayAddress);
+    			setAddress(gatewayAddress);
     		}
     		
     		return true;
     	} else if (itemId == R.id.menu_debug_known) {
-    		addressText.setText("mopsled.com/r");
+    		setAddress("mopsled.com/r");
     	}
     	
     	return super.onOptionsItemSelected(item);
@@ -116,6 +117,14 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         clearStatus();
         status.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         status.getSettings().setJavaScriptEnabled(true);
+	}
+	
+	private void setAddress(String address) {
+		addressText.setText(address);
+		
+		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(addressText.getWindowToken(), 0);
+		status.requestFocus();
 	}
 	
 	private void clearStatus() {
