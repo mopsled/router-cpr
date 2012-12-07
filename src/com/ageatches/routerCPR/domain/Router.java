@@ -5,9 +5,11 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "routers")
 public class Router {
+	@DatabaseField(generatedId = true)
+	private int id;
 	@DatabaseField
 	private String ssid;
-	@DatabaseField(id = true)
+	@DatabaseField
 	private String bssid;
 	@DatabaseField
 	private String user;
