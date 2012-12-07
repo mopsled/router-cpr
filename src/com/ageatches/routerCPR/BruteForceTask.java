@@ -79,7 +79,7 @@ public class BruteForceTask extends AsyncTask<Void, String, BruteForceTask.Crede
 				
 				String userString = (user.getUser().equals("")) ? "(blank)" : user.getUser();
 				String passwordString = (password.getPassword().equals("")) ? "(blank)" : password.getPassword();
-				publishProgress("Trying authentication " + userString + "/" + passwordString + "");
+				publishProgress("Trying " + userString + "/" + passwordString + "");
 				
 				int responseCode;
 				try {
