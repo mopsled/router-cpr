@@ -1,9 +1,10 @@
 <resources>
 
     <string name="app_name">Router-CPR</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main">Router-CPR</string>
+    
     <string name="menu_guess_gateway">Guess Gateway</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="menu_debug_known">DEBUG: Enter known address</string>
     
     <string name="address_label">Address</string>
     <string name="recover_button_text">Recover</string>

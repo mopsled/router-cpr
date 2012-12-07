@@ -60,6 +60,8 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     		}
     		
     		return true;
+    	} else if (itemId == R.id.menu_debug_known) {
+    		addressText.setText("mopsled.com/r");
     	}
     	
     	return super.onOptionsItemSelected(item);
@@ -67,6 +69,8 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     
     public void recoverAction(View v) {
     	clearStatus();
+    	clearSubStatus();
+    	
     	String address = addressText.getText().toString();
     	appendToStatus("Starting recovery of " + address + "...");
     	
@@ -81,8 +85,10 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 
     public void processBruteForceTaskSucceeded(Credential credentials) {
     	appendToStatus("Brute force successful!");
-		String status = "User: " + credentials.getUser() + ", Password: " + credentials.getPassword();
+		String status = credentials.getUser().getUser() + "/" + credentials.getPassword().getPassword();
 		appendToStatus("Credentials: " + status);
+		
+		clearSubStatus();
 	}
 
     public void processBruteForceTaskFailed(Error error) {

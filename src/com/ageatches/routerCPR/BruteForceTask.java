@@ -155,7 +155,7 @@ public class BruteForceTask extends AsyncTask<Void, String, BruteForceTask.Crede
 	
 	private void setAuthentication(HttpURLConnection connection, User user, Password password) {
 		String credentials = user.getUser() + ":" + password.getPassword();
-		connection.setRequestProperty("Authorization", "basic " + Base64.encode(credentials.getBytes(), Base64.DEFAULT));
+		connection.setRequestProperty("Authorization", "Basic " +  Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP));
 	}
 	
 	private String getProgress(int guesses, int totalGuesses) {
