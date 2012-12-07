@@ -29,7 +29,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/recover_section"
-        android:layout_below="@id/address_section" />
+        android:layout_below="@id/address_section" />"
 
     <LinearLayout
         android:id="@id/recover_section"

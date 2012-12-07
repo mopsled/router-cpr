@@ -80,6 +80,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 	@SuppressLint("SetJavaScriptEnabled")
 	private void initializeStatus() {
         clearStatus();
+        status.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         status.getSettings().setJavaScriptEnabled(true);
 	}
 	
