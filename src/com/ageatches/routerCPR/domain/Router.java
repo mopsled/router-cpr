@@ -62,6 +62,35 @@ public class Router {
 	}
 	
 	public Router() {
-		
+		// Needed for ORMlite
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getSsid() {
+		return ssid;
+	}
+
+	public String getBssid() {
+		return bssid;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+	
 }
