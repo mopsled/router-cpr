@@ -78,6 +78,8 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     		setAddress("mopsled.com/r");
     	} else if (itemId == R.id.menu_store_credentials) {
     		storeCredentials();
+    	} else if (itemId == R.id.menu_view_router_locations) {
+    		
     	}
     	
     	return super.onOptionsItemSelected(item);

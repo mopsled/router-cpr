@@ -5,11 +5,15 @@
         android:showAsAction="never" />
     <item android:id="@+id/menu_debug_known"
         android:title="@string/menu_debug_known"
-        android:orderInCategory="100"
+        android:orderInCategory="101"
         android:showAsAction="never" />
     <item android:id="@+id/menu_store_credentials"
         android:title="@string/menu_store_credentials"
-        android:orderInCategory="100"
+        android:orderInCategory="102"
         android:showAsAction="never"
         android:visible="false" />
+    <item android:id="@+id/menu_view_router_locations"
+        android:title="@string/menu_view_router_locations"
+       android:orderInCategory="103"
+        android:showAsAction="never" />
 </menu>
