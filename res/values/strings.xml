@@ -27,8 +27,6 @@
     <string name="error_uknown_response_code">Error: unknown response code returned by server</string>
     <string name="error_not_connected_to_wifi">Error: not connected to wifi, cannot store results</string>
     
-    <string name="progress_trying">Trying</string>
-    
     <string name="map_dialog_bssid">BSSID</string>
     <string name="map_dialog_user">User</string>
     <string name="map_dialog_password">Password</string>

@@ -133,7 +133,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 
 	public void processBruteForceTaskUpdate(String progress, String user, String password) {
 		StringBuilder statusBuilder = new StringBuilder(progress).append(" ")
-				.append(getString(R.string.progress_trying)).append(" ")
+				.append(getString(R.string.status_progress_trying)).append(" ")
 				.append(user).append("/").append(password);
 		setSubStatus(statusBuilder.toString());
 	}
