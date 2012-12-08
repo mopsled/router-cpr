@@ -10,8 +10,8 @@
 					p.className += "good";
 				} else if (type == "BAD") {
 					p.className += "bad";
-				} else if (type == "INSTRUCTIONS") {
-					p.className += "instructions";
+				} else if (type == "IMPORTANT") {
+					p.className += "important";
 				}
 				
 				document.getElementById('status').appendChild(p);
@@ -42,7 +42,7 @@
 				color: red;
 			}
 			
-			.instructions {
+			.important {
 				font-weight: bold;
 				color: white;
 			}

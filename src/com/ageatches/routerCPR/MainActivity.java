@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Location;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.ageatches.routerCPR.BruteForceTask.Credential;
 import com.ageatches.routerCPR.BruteForceTask.Error;
+import com.ageatches.routerCPR.MyLocation.LocationResult;
 import com.ageatches.routerCPR.domain.Password;
 import com.ageatches.routerCPR.domain.Router;
 import com.ageatches.routerCPR.domain.User;
@@ -39,7 +41,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 		INFO,
 		GOOD,
 		BAD,
-		INSTRUCTIONS
+		IMPORTANT
 	};
 
     public void onCreate(Bundle savedInstanceState) {
@@ -101,7 +103,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     	appendToStatus("Brute force successful!", StatusType.GOOD);
 		String status = credentials.getUser().getUser() + "/" + credentials.getPassword().getPassword();
 		appendToStatus("Credentials: " + status, StatusType.GOOD);
-		appendToStatus("Press MENU to store credentials.", StatusType.INSTRUCTIONS);
+		appendToStatus("Press MENU to store credentials.", StatusType.IMPORTANT);
 		
 		addStoreCredentialsMenuItem();
 		discoveredCredentials = credentials;
@@ -138,15 +140,40 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 		WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 		
-		String ssid = wifiInfo.getSSID();
-		String bssid = wifiInfo.getBSSID();
-		String user = discoveredCredentials.getUser().getUser();
-		String password = discoveredCredentials.getPassword().getPassword();
+		final String ssid = wifiInfo.getSSID();
+		final String bssid = wifiInfo.getBSSID();
+		final String user = discoveredCredentials.getUser().getUser();
+		final String password = discoveredCredentials.getPassword().getPassword();
 		
-		Router router = new Router.Builder(bssid, user, password).ssid(ssid).build();
-		getHelper().getRouterDao().create(router);
+		LocationResult locationResult = new LocationResult() {
+			@Override
+			public void gotLocation(Location location) {
+				Router.Builder routerBuilder = new Router.Builder(bssid, user, password).ssid(ssid);
+				
+				if (location == null) {
+					appendToStatus("Couldn't get GPS, storing results without coordinates");
+				} else {
+					double latitude = location.getLatitude();
+					double longitude = location.getLongitude();
+					appendToStatus("Located at " + Double.toString(latitude) + "," + Double.toString(longitude));
+					routerBuilder = routerBuilder.coordinates(latitude, longitude);
+				}
+				
+				Router router = routerBuilder.build();
+				getHelper().getRouterDao().create(router);
+				
+				appendToStatus("Credentials stored!", StatusType.IMPORTANT);
+			}
+		};
 		
-		appendToStatus("Credentials stored.");
+		appendToStatus("Looking for GPS...");
+		MyLocation myLocation = new MyLocation();
+		boolean canGetLocation = myLocation.getLocation(this, locationResult);
+		
+		if (!canGetLocation) {
+			locationResult.gotLocation(null);
+		}
+		
 		removeStoreCredentialsMenuItem();
 	}
 	
@@ -174,6 +201,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     }
     
     private void appendToStatus(String update, StatusType type) {
+    	update = makeJavascriptStringSafe(update);
     	status.loadUrl("javascript:appendToStatus('" + update + "', '" + type.toString() + "')");
     }
     
@@ -183,6 +211,13 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     
     private void clearSubStatus() {
     	status.loadUrl("javascript:setSubStatus('')");
+    }
+    
+    private String makeJavascriptStringSafe(String message) {
+    	message = message.replace("\\", "\\\\");
+    	message = message.replace("\"", "\\\"");
+    	message = message.replace("'", "\\'");
+    	return message;
     }
     
     private void addStoreCredentialsMenuItem() {
