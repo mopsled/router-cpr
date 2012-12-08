@@ -53,9 +53,9 @@ public class RouterMap extends MapActivity {
 			GeoPoint geoPoint = new GeoPoint((int)(router.getLatitude() * 1E6), (int)(router.getLongitude() * 1E6));
 			String title = router.getSsid();
 			StringBuilder message = new StringBuilder();
-			message.append("BSSID - ").append(router.getBssid()).append("\n\n");
-			message.append("User - ").append(router.getUser()).append("\n");
-			message.append("Password - ").append(router.getPassword());
+			message.append(getString(R.string.map_dialog_bssid)).append(" - ").append(router.getBssid()).append("\n\n");
+			message.append(getString(R.string.map_dialog_user)).append(" - ").append(router.getUser()).append("\n");
+			message.append(getString(R.string.map_dialog_password)).append(" - ").append(router.getPassword());
 			
 			OverlayItem overlayItem = new OverlayItem(geoPoint, title, message.toString());
 			

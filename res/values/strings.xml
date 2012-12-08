@@ -28,7 +28,11 @@
     <string name="error_not_connected_to_wifi">Error: not connected to wifi, cannot store results</string>
     
     <string name="progress_trying">Trying</string>
-   
+    
+    <string name="map_dialog_bssid">BSSID</string>
+    <string name="map_dialog_user">User</string>
+    <string name="map_dialog_password">Password</string>
+    
     <string name="address_label">Address</string>
     <string name="recover_button_text">Recover</string>
 
