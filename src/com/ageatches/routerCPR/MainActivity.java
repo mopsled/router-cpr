@@ -71,7 +71,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     	if (itemId == R.id.menu_guess_gateway) {
     		String gatewayAddress = getGatewayAddress();
     		if (gatewayAddress == null) {
-    			Toast.makeText(this, "Unable to retrieve gateway", Toast.LENGTH_SHORT).show();
+    			Toast.makeText(this, getString(R.string.main_cannot_get_gateway), Toast.LENGTH_SHORT).show();
     		} else {
     			setAddress(gatewayAddress);
     		}
@@ -93,7 +93,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     	resetState();
     	
     	String address = addressText.getText().toString();
-    	appendToStatus("Starting recovery of " + address + "...");
+    	appendToStatus(getString(R.string.status_starting_recovery) + " " + address + "...");
     	
     	RuntimeExceptionDao<User, Integer> userDao = getHelper().getUserDao();
     	List<User> users = userDao.queryForAll();
@@ -106,10 +106,10 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 
     public void processBruteForceTaskSucceeded(Credential credentials) {
     	clearSubStatus();
-    	appendToStatus("Brute force successful!", StatusType.GOOD);
+    	appendToStatus(getString(R.string.status_successful_brute_force), StatusType.GOOD);
 		String status = credentials.getUser().getUser() + "/" + credentials.getPassword().getPassword();
-		appendToStatus("Credentials: " + status, StatusType.GOOD);
-		appendToStatus("Press MENU to store credentials.", StatusType.IMPORTANT);
+		appendToStatus(getString(R.string.status_credentials) + " " + status, StatusType.GOOD);
+		appendToStatus(getString(R.string.status_store_credentials), StatusType.IMPORTANT);
 		
 		addStoreCredentialsMenuItem();
 		discoveredCredentials = credentials;
@@ -117,15 +117,15 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 
     public void processBruteForceTaskFailed(Error error) {
 		if (error == Error.COULD_NOT_CONNECT) {
-			appendToStatus("Error: could not connect to address", StatusType.BAD);
+			appendToStatus(getString(R.string.error_could_not_connect), StatusType.BAD);
 		} else if (error == Error.AUTHENTICATION_UNECESSARY) {
-			appendToStatus("Error: address given does not require authentication", StatusType.BAD);
+			appendToStatus(getString(R.string.error_no_authentication_needed), StatusType.BAD);
 		} else if (error == Error.INVALID_URL) {
-			appendToStatus("Error: could not understand the address", StatusType.BAD);
+			appendToStatus(getString(R.string.error_bad_url), StatusType.BAD);
 		} else if (error == Error.UNKNOWN_RESPONSE_CODE) {
-			appendToStatus("Error: unknown reponse code returned by server", StatusType.BAD);
+			appendToStatus(getString(R.string.error_uknown_response_code), StatusType.BAD);
 		} else if (error == Error.COULD_NOT_BRUTE_FORCE) {
-			appendToStatus("Brute force failed. Unable to brute force address.", StatusType.BAD);
+			appendToStatus(getString(R.string.status_brute_force_failed), StatusType.BAD);
 		}
 		
 		clearSubStatus();
@@ -146,7 +146,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 		ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
 		NetworkInfo wifiConnectivityInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 		if (!wifiConnectivityInfo.isConnected()) {
-			appendToStatus("Error: not connected to wifi, cannot store results", StatusType.BAD);
+			appendToStatus(getString(R.string.error_not_connected_to_wifi), StatusType.BAD);
 			removeStoreCredentialsMenuItem();
 			return;
 		}
@@ -165,11 +165,11 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 				Router.Builder routerBuilder = new Router.Builder(bssid, user, password).ssid(ssid);
 				
 				if (location == null) {
-					appendToStatus("Couldn't get GPS, storing results without coordinates");
+					appendToStatus(getString(R.string.status_no_gps));
 				} else {
 					double latitude = location.getLatitude();
 					double longitude = location.getLongitude();
-					appendToStatus("Located at " + Double.toString(latitude) + "," + Double.toString(longitude));
+					appendToStatus(getString(R.string.status_located_gps) + " " + Double.toString(latitude) + "," + Double.toString(longitude));
 					routerBuilder = routerBuilder.coordinates(latitude, longitude);
 				}
 				
@@ -177,11 +177,11 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 				deleteRoutersWithSameBssid(router);
 				getHelper().getRouterDao().create(router);
 				
-				appendToStatus("Credentials stored!", StatusType.IMPORTANT);
+				appendToStatus(getString(R.string.status_credentials_stored), StatusType.IMPORTANT);
 			}
 		};
 		
-		appendToStatus("Looking for GPS...");
+		appendToStatus(getString(R.string.status_locating_gps));
 		MyLocation myLocation = new MyLocation();
 		boolean canGetLocation = myLocation.getLocation(this, locationResult);
 		

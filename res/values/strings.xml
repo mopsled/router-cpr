@@ -8,7 +8,24 @@
     <string name="menu_store_credentials">Store Credentials</string>
     <string name="menu_view_router_locations">View Router Locations</string>
     
+    <string name="main_cannot_get_gateway">Unable to retrieve gateway</string>
     
+    <string name="status_starting_recovery">Starting recovery of</string>
+    <string name="status_successful_brute_force">Brute force successful!</string>
+    <string name="status_brute_force_failed">Brute force failed. Unable to brute force address</string>
+    <string name="status_credentials">Credentials:</string>
+    <string name="status_store_credentials">Press MENU to store credentials.</string>
+    <string name="status_credentials_stored">Credentials stored!</string>
+    <string name="status_no_gps">Couldn\'t get GPS, storing results without coordinates</string>
+    <string name="status_locating_gps">Looking for GPS...</string>
+    <string name="status_located_gps">Located at</string>
+    
+    <string name="error_could_not_connect">Error: could not connect to address</string>
+    <string name="error_no_authentication_needed">Error: address given does not require authentication</string>
+    <string name="error_bad_url">Error: could not understand the address</string>
+    <string name="error_uknown_response_code">Error: unknown response code returned by server</string>
+    <string name="error_not_connected_to_wifi">Error: not connected to wifi, cannot store results</string>
+   
     <string name="address_label">Address</string>
     <string name="recover_button_text">Recover</string>
 
