@@ -3,15 +3,15 @@ package com.ageatches.routerCPR;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -143,6 +143,14 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 	}
 	
 	private void storeCredentials() {
+		ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+		NetworkInfo wifiConnectivityInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		if (!wifiConnectivityInfo.isConnected()) {
+			appendToStatus("Error: not connected to wifi, cannot store results", StatusType.BAD);
+			removeStoreCredentialsMenuItem();
+			return;
+		}
+		
 		WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 		
