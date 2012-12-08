@@ -3,7 +3,9 @@ package com.ageatches.routerCPR;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -164,6 +166,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 				}
 				
 				Router router = routerBuilder.build();
+				deleteRoutersWithSameBssid(router);
 				getHelper().getRouterDao().create(router);
 				
 				appendToStatus("Credentials stored!", StatusType.IMPORTANT);
@@ -187,6 +190,15 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(addressText.getWindowToken(), 0);
 		status.requestFocus();
+	}
+	
+	private void deleteRoutersWithSameBssid(Router router) {
+		Router oldRouter = new Router.Builder(router.getBssid(), null, null).build();
+		RuntimeExceptionDao<Router, Integer> routerDao = getHelper().getRouterDao();
+		List<Router> oldRouters = routerDao.queryForMatching(oldRouter);
+		for (int i = 0; i < oldRouters.size(); i++) {
+			routerDao.delete(oldRouters.get(i));
+		}
 	}
 	
 	private void resetState() {
