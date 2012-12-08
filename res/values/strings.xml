@@ -19,12 +19,15 @@
     <string name="status_no_gps">Couldn\'t get GPS, storing results without coordinates</string>
     <string name="status_locating_gps">Looking for GPS...</string>
     <string name="status_located_gps">Located at</string>
+    <string name="status_progress_trying">Trying</string>
     
     <string name="error_could_not_connect">Error: could not connect to address</string>
     <string name="error_no_authentication_needed">Error: address given does not require authentication</string>
     <string name="error_bad_url">Error: could not understand the address</string>
     <string name="error_uknown_response_code">Error: unknown response code returned by server</string>
     <string name="error_not_connected_to_wifi">Error: not connected to wifi, cannot store results</string>
+    
+    <string name="progress_trying">Trying</string>
    
     <string name="address_label">Address</string>
     <string name="recover_button_text">Recover</string>

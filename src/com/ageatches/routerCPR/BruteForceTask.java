@@ -85,7 +85,7 @@ public class BruteForceTask extends AsyncTask<Void, String, BruteForceTask.Crede
 				String userString = (user.getUser().equals("")) ? "(blank)" : user.getUser();
 				String passwordString = (password.getPassword().equals("")) ? "(blank)" : password.getPassword();
 				String progress = getProgress(guesses, totalGuesses);
-				publishProgress(progress + " Trying " + userString + "/" + passwordString);
+				publishProgress(progress, userString, passwordString);
 				guesses++;
 				
 				int responseCode;
@@ -121,7 +121,7 @@ public class BruteForceTask extends AsyncTask<Void, String, BruteForceTask.Crede
 	
 	@Override
 	protected void onProgressUpdate(String... values) {
-		delegate.processBruteForceTaskUpdate(values[0]);
+		delegate.processBruteForceTaskUpdate(values[0], values[1], values[2]);
 	}
 	
 	private Error tryConnectingWithoutCredentials(URL url) {

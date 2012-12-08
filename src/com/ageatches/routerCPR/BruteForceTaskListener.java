@@ -5,6 +5,6 @@ import com.ageatches.routerCPR.BruteForceTask.Error;
 
 public interface BruteForceTaskListener {
 	public void processBruteForceTaskSucceeded(Credential credentials);
-	public void processBruteForceTaskUpdate(String update);
+	public void processBruteForceTaskUpdate(String progress, String user, String password);
 	public void processBruteForceTaskFailed(Error error);
 }
