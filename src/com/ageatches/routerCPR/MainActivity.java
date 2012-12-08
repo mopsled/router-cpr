@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiInfo;
@@ -79,7 +80,8 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     	} else if (itemId == R.id.menu_store_credentials) {
     		storeCredentials();
     	} else if (itemId == R.id.menu_view_router_locations) {
-    		
+    		Intent routerMapIntent = new Intent(this, RouterMap.class);
+    		startActivity(routerMapIntent);
     	}
     	
     	return super.onOptionsItemSelected(item);
