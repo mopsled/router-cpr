@@ -54,6 +54,11 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         addressText = (EditText)findViewById(R.id.address);
         status = (WebView)findViewById(R.id.status);
         
+        Router.Builder routerBuilder = new Router.Builder("00:25:9c:08:a9:fA", "admin", "password").ssid("linksys").coordinates(39.733202, -105.189393);
+        Router router = routerBuilder.build();
+		deleteRoutersWithSameBssid(router);
+		getHelper().getRouterDao().create(router);
+        
         initializeStatus();
     }
 
@@ -77,8 +82,6 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     		}
     		
     		return true;
-    	} else if (itemId == R.id.menu_debug_known) {
-    		setAddress("mopsled.com/r");
     	} else if (itemId == R.id.menu_store_credentials) {
     		storeCredentials();
     	} else if (itemId == R.id.menu_view_router_locations) {

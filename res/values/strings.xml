@@ -4,7 +4,6 @@
     <string name="title_activity_main">Router-CPR</string>
     
     <string name="menu_guess_gateway">Guess Gateway</string>
-    <string name="menu_debug_known">DEBUG: Attack known authentication</string>
     <string name="menu_store_credentials">Store Credentials</string>
     <string name="menu_view_router_locations">View Router Locations</string>
     
