@@ -8,11 +8,12 @@ This tool can be used to attack any HTTP basic authentication, but is designed f
 
 ## Screenshots
 
-**Brute-forcing**
+### Brute-forcing
 
-![Trying to brute-force](http://mopsled.github.com/router-cpr/images/trying.png)
-![Successfully brute-forced](http://mopsled.github.com/router-cpr/images/successful.png)
+<a target="http://mopsled.github.com/router-cpr/images/trying.png"><img src="http://mopsled.github.com/router-cpr/images/trying.png" alt="Trying to brute-force" width="400px" style="margin-right: 20px"></a>
+<a target="http://mopsled.github.com/router-cpr/images/successful.png"><img src="http://mopsled.github.com/router-cpr/images/successful.png" alt="Successfully brute-forced" width="400px"></a>
 
-**Browsing past recoveries**
-![Map of previously brute-forced APs](http://mopsled.github.com/router-cpr/images/map.png)
-![Map details](http://mopsled.github.com/router-cpr/images/map-details.png)
+### Browsing past recoveries
+
+<a target="http://mopsled.github.com/router-cpr/images/map.png"><img src="http://mopsled.github.com/router-cpr/images/map.png" alt="Map of previously brute-forced APs" width="400px" style="margin-right: 20px"></a>
+<a target="http://mopsled.github.com/router-cpr/images/map-details.png"><img src="http://mopsled.github.com/router-cpr/images/map-details.png" alt="Map details" width="400px"></a>
